@@ -1,42 +1,46 @@
 pipeline {
-    agent { label 'slave1' }
+    agent any
     tools {
-    maven 'Maven3' 
+    maven 'maven3'    
     }
 
     stages {
-        stage('source_stage') {
+        stage('sourcecode') {
             steps {
-                git credentialsId: 'git', url: 'https://github.com/Auspice-Consultany-Services/acs-devops-005.git'
+                git credentialsId: 'git', url: 'https://github.com/vishalmarla/Java_Webb_App.git'
             }
         }
-        
-        stage('compile_stage') {
+         stage('compile') {
             steps {
-                sh 'mvn clean compile'           
+               sh 'mvn clean compile' 
             }
         }
-        
-        stage('test_stage') {
+         stage('test') {
             steps {
-                sh 'mvn clean test'           
+               sh 'mvn clean test' 
             }
         }
+       
+       
+        stage('sonar') {
+            steps {
+               withSonarQubeEnv('sonar') {
+                  sh 'mvn clean package sonar:sonar'
+                }
+            
+            }
+        }
+            
+        stage('deploy') {
+            steps {
+                 deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://34.238.242.24:8090/')], contextPath: null, war: '**/*.war' 
+            }
+        }
+              
+
         
-        
-//         stage('sonar_analysis') {
-//             steps {
-//                 withSonarQubeEnv('sonar') { 
-//                 sh 'mvn clean package sonar:sonar'           
-//             }
-//             }
-//         }
-        
-//         stage('deploy_stage') {
-//             steps {
-//                 deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://3.210.185.133:8090/')], contextPath: null, war: '**/*.war'
-//             }
-//         }
     }
 }
+
+
 
