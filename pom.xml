@@ -94,9 +94,22 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
-        </dependency>
-    </dependencies>
-    <build>
+       </dependency>
+
+      </dependencies>
+      <distributionManagement>
+    <repository>
+        <id>central</id>
+        <name>6202e5f5f43c-releases</name>
+        <url>http://52.207.197.242:8081/artifactory/acs-test</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>6202e5f5f43c-snapshots</name>
+        <url>http://52.207.197.242:8081/artifactory/acs-test</url>
+    </snapshotRepository>
+</distributionManagement>
+      <build>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
